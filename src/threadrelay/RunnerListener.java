@@ -1,0 +1,14 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
+ */
+package threadrelay;
+
+/**
+ *
+ * @author samue
+ */
+public interface RunnerListener {
+    public void aggiornaPosizione(int idRunner , int posizione);
+    public void corsaFinita(int idRunner);
+}
