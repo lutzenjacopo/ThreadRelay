@@ -4,12 +4,15 @@
  */
 package threadrelay;
 
+import javax.swing.SwingUtilities;
+
 /**
  *
  * @author samue
  */
-public class Gara extends javax.swing.JFrame {
-    
+public class Gara extends javax.swing.JFrame implements RunnerListener{
+    private javax.swing.JLabel[] iconeRunners;
+    private javax.swing.JLabel[] testiPunteggi;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Gara.class.getName());
 
     /**
@@ -17,6 +20,12 @@ public class Gara extends javax.swing.JFrame {
      */
     public Gara() {
         initComponents();
+        iconeRunners = new javax.swing.JLabel[]{
+            lbl_Corridore1, lbl_Corridore5, lbl_Corridore6, lbl_Corridore7
+        };
+        testiPunteggi = new javax.swing.JLabel[]{
+            lbl_pRunner1, lbl_pRunner2, lbl_pRunner3, lbl_pRunner4
+        };
     }
 
     /**
@@ -257,4 +266,30 @@ public class Gara extends javax.swing.JFrame {
     private javax.swing.JPanel pnl_nRunner3;
     private javax.swing.JPanel pnl_nRunner4;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void aggiornaPosizione(int idRunner, int posizione) {
+        SwingUtilities.invokeLater(() -> {
+            int indice = idRunner - 1; 
+            
+            // Aggiorno il testo
+            testiPunteggi[indice].setText("    " + posizione + "    ");
+            
+            // Calcolo lo spazio e sposto l'icona
+            javax.swing.JLabel icona = iconeRunners[indice];
+            int larghezzaCorsia = icona.getParent().getWidth();
+            int spazioPercorribile = larghezzaCorsia - icona.getWidth();
+            
+            int nuovaX = (posizione * spazioPercorribile) / 99;
+            icona.setLocation(nuovaX, icona.getY());
+        });
+    }
+
+    @Override
+    public void corsaFinita(int idRunner) {
+        SwingUtilities.invokeLater(() -> {
+            int indice = idRunner - 1;
+            testiPunteggi[indice].setText("  Fine  ");
+        });
+    }
 }
