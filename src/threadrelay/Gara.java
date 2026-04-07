@@ -10,9 +10,11 @@ import javax.swing.SwingUtilities;
  *
  * @author samue
  */
-public class Gara extends javax.swing.JFrame implements RunnerListener{
+public class Gara extends javax.swing.JFrame implements RunnerListener {
+
     private javax.swing.JLabel[] iconeRunners;
     private javax.swing.JLabel[] testiPunteggi;
+    private Runner[] runnersAttivi = new Runner[4];
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Gara.class.getName());
 
     /**
@@ -67,6 +69,9 @@ public class Gara extends javax.swing.JFrame implements RunnerListener{
         lbl_pRunner4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(800, 350));
+        setPreferredSize(new java.awt.Dimension(800, 450));
+        setResizable(false);
         getContentPane().setLayout(new java.awt.BorderLayout(10, 10));
 
         pnl_Corsie.setAutoscrolls(true);
@@ -122,18 +127,22 @@ public class Gara extends javax.swing.JFrame implements RunnerListener{
         pnl_Controlli.add(cbx_Velocita);
 
         btn_Avvia.setText("Avvia");
+        btn_Avvia.addActionListener(this::btn_AvviaActionPerformed);
         pnl_Controlli.add(btn_Avvia);
 
         btn_Sospende.setText("Sospende");
         btn_Sospende.setEnabled(false);
+        btn_Sospende.addActionListener(this::btn_SospendeActionPerformed);
         pnl_Controlli.add(btn_Sospende);
 
         btn_Riprende.setText("Riprende");
         btn_Riprende.setEnabled(false);
+        btn_Riprende.addActionListener(this::btn_RiprendeActionPerformed);
         pnl_Controlli.add(btn_Riprende);
 
         btn_Ferma.setText("Ferma");
         btn_Ferma.setEnabled(false);
+        btn_Ferma.addActionListener(this::btn_FermaActionPerformed);
         pnl_Controlli.add(btn_Ferma);
 
         getContentPane().add(pnl_Controlli, java.awt.BorderLayout.SOUTH);
@@ -211,6 +220,77 @@ public class Gara extends javax.swing.JFrame implements RunnerListener{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btn_AvviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_AvviaActionPerformed
+        int v = 0;
+
+        switch (cbx_Velocita.getSelectedIndex()) {
+            case 0 ->
+                v = 100;
+            case 1 ->
+                v = 50;
+            case 2 ->
+                v = 10;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            Runner r = new Runner(i + 1, v, this);
+            runnersAttivi[i] = r;
+        }
+
+        runnersAttivi[0].setProssimoRunner(runnersAttivi[1]);
+        runnersAttivi[1].setProssimoRunner(runnersAttivi[2]);
+        runnersAttivi[2].setProssimoRunner(runnersAttivi[3]);
+        runnersAttivi[3].setProssimoRunner(null);
+
+        for (javax.swing.JLabel icona : iconeRunners) {
+            icona.setLocation(10, icona.getY());
+        }
+
+        btn_Avvia.setEnabled(false);
+        cbx_Velocita.setEnabled(false);
+        btn_Sospende.setEnabled(true);
+        btn_Ferma.setEnabled(true);
+        btn_Riprende.setEnabled(false);
+
+        Thread t1 = new Thread(runnersAttivi[0]);
+        t1.start();
+    }//GEN-LAST:event_btn_AvviaActionPerformed
+
+    private void btn_SospendeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SospendeActionPerformed
+        for (Runner r : runnersAttivi) {
+            r.sospendi();
+        }
+        btn_Riprende.setEnabled(true);
+        btn_Sospende.setEnabled(false);
+
+    }//GEN-LAST:event_btn_SospendeActionPerformed
+
+    private void btn_RiprendeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_RiprendeActionPerformed
+        for (Runner r : runnersAttivi) {
+            r.riprendi();
+        }
+        btn_Riprende.setEnabled(false);
+        btn_Sospende.setEnabled(true);
+    }//GEN-LAST:event_btn_RiprendeActionPerformed
+
+    private void btn_FermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_FermaActionPerformed
+        for (Runner r : runnersAttivi) {
+            if (r != null) {
+                r.ferma();
+            }
+        }
+        btn_Avvia.setEnabled(true);
+        cbx_Velocita.setEnabled(true);
+
+        btn_Sospende.setEnabled(false);
+        btn_Riprende.setEnabled(false);
+        btn_Ferma.setEnabled(false);
+
+    }//GEN-LAST:event_btn_FermaActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
     /**
      * @param args the command line arguments
      */
@@ -270,16 +350,16 @@ public class Gara extends javax.swing.JFrame implements RunnerListener{
     @Override
     public void aggiornaPosizione(int idRunner, int posizione) {
         SwingUtilities.invokeLater(() -> {
-            int indice = idRunner - 1; 
-            
+            int indice = idRunner - 1;
+
             // Aggiorno il testo
             testiPunteggi[indice].setText("    " + posizione + "    ");
-            
+
             // Calcolo lo spazio e sposto l'icona
             javax.swing.JLabel icona = iconeRunners[indice];
             int larghezzaCorsia = icona.getParent().getWidth();
             int spazioPercorribile = larghezzaCorsia - icona.getWidth();
-            
+
             int nuovaX = (posizione * spazioPercorribile) / 99;
             icona.setLocation(nuovaX, icona.getY());
         });
@@ -290,6 +370,14 @@ public class Gara extends javax.swing.JFrame implements RunnerListener{
         SwingUtilities.invokeLater(() -> {
             int indice = idRunner - 1;
             testiPunteggi[indice].setText("  Fine  ");
+            if (idRunner == 4) {
+                btn_Avvia.setEnabled(true);
+                cbx_Velocita.setEnabled(true);
+                btn_Sospende.setEnabled(false);
+                btn_Ferma.setEnabled(false);
+                btn_Riprende.setEnabled(false);
+            }
         });
     }
+
 }

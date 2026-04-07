@@ -29,7 +29,7 @@ public class Runner implements Runnable {
                     try {
                         wait();
                     } catch (InterruptedException ex) {
-                        System.getLogger(Runner.class.getName()).log(System.Logger.Level.ERROR, null, ex);
+                        System.getLogger(Runner.class.getName()).log(System.Logger.Level.ERROR, "Errore:", ex);
                     }
                 }
             }
@@ -46,7 +46,7 @@ public class Runner implements Runnable {
             try {
                 Thread.sleep(velocita);
             } catch (InterruptedException ex) {
-                System.getLogger(Runner.class.getName()).log(System.Logger.Level.ERROR, null, ex);
+                System.getLogger(Runner.class.getName()).log(System.Logger.Level.ERROR, "Errore:", ex);
             }
         }
         // 5. Corretto mioId con identificativo
