@@ -23,7 +23,7 @@ public class Gara extends javax.swing.JFrame implements RunnerListener {
     public Gara() {
         initComponents();
         iconeRunners = new javax.swing.JLabel[]{
-            lbl_Corridore1, lbl_Corridore5, lbl_Corridore6, lbl_Corridore7
+            lbl_Corridore1, lbl_Corridore2, lbl_Corridore3, lbl_Corridore4
         };
         testiPunteggi = new javax.swing.JLabel[]{
             lbl_pRunner1, lbl_pRunner2, lbl_pRunner3, lbl_pRunner4
@@ -42,12 +42,12 @@ public class Gara extends javax.swing.JFrame implements RunnerListener {
         pnl_Corsie = new javax.swing.JPanel();
         pnl_Corsia1 = new javax.swing.JPanel();
         lbl_Corridore1 = new javax.swing.JLabel();
-        pnl_Corsia5 = new javax.swing.JPanel();
-        lbl_Corridore5 = new javax.swing.JLabel();
-        pnl_Corsia6 = new javax.swing.JPanel();
-        lbl_Corridore6 = new javax.swing.JLabel();
-        pnl_Corsia7 = new javax.swing.JPanel();
-        lbl_Corridore7 = new javax.swing.JLabel();
+        pnl_Corsia2 = new javax.swing.JPanel();
+        lbl_Corridore2 = new javax.swing.JLabel();
+        pnl_Corsia3 = new javax.swing.JPanel();
+        lbl_Corridore3 = new javax.swing.JLabel();
+        pnl_Corsia4 = new javax.swing.JPanel();
+        lbl_Corridore4 = new javax.swing.JLabel();
         pnl_Controlli = new javax.swing.JPanel();
         cbx_Velocita = new javax.swing.JComboBox<>();
         btn_Avvia = new javax.swing.JButton();
@@ -88,35 +88,35 @@ public class Gara extends javax.swing.JFrame implements RunnerListener {
 
         pnl_Corsie.add(pnl_Corsia1);
 
-        pnl_Corsia5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
-        pnl_Corsia5.setLayout(null);
+        pnl_Corsia2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
+        pnl_Corsia2.setLayout(null);
 
-        lbl_Corridore5.setText("🏃");
-        lbl_Corridore5.setToolTipText("");
-        pnl_Corsia5.add(lbl_Corridore5);
-        lbl_Corridore5.setBounds(10, 30, 20, 20);
+        lbl_Corridore2.setText("🏃");
+        lbl_Corridore2.setToolTipText("");
+        pnl_Corsia2.add(lbl_Corridore2);
+        lbl_Corridore2.setBounds(10, 30, 20, 20);
 
-        pnl_Corsie.add(pnl_Corsia5);
+        pnl_Corsie.add(pnl_Corsia2);
 
-        pnl_Corsia6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
-        pnl_Corsia6.setLayout(null);
+        pnl_Corsia3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
+        pnl_Corsia3.setLayout(null);
 
-        lbl_Corridore6.setText("🏃");
-        lbl_Corridore6.setToolTipText("");
-        pnl_Corsia6.add(lbl_Corridore6);
-        lbl_Corridore6.setBounds(10, 30, 20, 20);
+        lbl_Corridore3.setText("🏃");
+        lbl_Corridore3.setToolTipText("");
+        pnl_Corsia3.add(lbl_Corridore3);
+        lbl_Corridore3.setBounds(10, 30, 20, 20);
 
-        pnl_Corsie.add(pnl_Corsia6);
+        pnl_Corsie.add(pnl_Corsia3);
 
-        pnl_Corsia7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
-        pnl_Corsia7.setLayout(null);
+        pnl_Corsia4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
+        pnl_Corsia4.setLayout(null);
 
-        lbl_Corridore7.setText("🏃");
-        lbl_Corridore7.setToolTipText("");
-        pnl_Corsia7.add(lbl_Corridore7);
-        lbl_Corridore7.setBounds(10, 30, 20, 20);
+        lbl_Corridore4.setText("🏃");
+        lbl_Corridore4.setToolTipText("");
+        pnl_Corsia4.add(lbl_Corridore4);
+        lbl_Corridore4.setBounds(10, 30, 20, 20);
 
-        pnl_Corsie.add(pnl_Corsia7);
+        pnl_Corsie.add(pnl_Corsia4);
 
         getContentPane().add(pnl_Corsie, java.awt.BorderLayout.CENTER);
 
@@ -323,9 +323,9 @@ public class Gara extends javax.swing.JFrame implements RunnerListener {
     private javax.swing.JButton btn_Sospende;
     private javax.swing.JComboBox<String> cbx_Velocita;
     private javax.swing.JLabel lbl_Corridore1;
-    private javax.swing.JLabel lbl_Corridore5;
-    private javax.swing.JLabel lbl_Corridore6;
-    private javax.swing.JLabel lbl_Corridore7;
+    private javax.swing.JLabel lbl_Corridore2;
+    private javax.swing.JLabel lbl_Corridore3;
+    private javax.swing.JLabel lbl_Corridore4;
     private javax.swing.JLabel lbl_nRunner1;
     private javax.swing.JLabel lbl_nRunner2;
     private javax.swing.JLabel lbl_nRunner3;
@@ -336,9 +336,9 @@ public class Gara extends javax.swing.JFrame implements RunnerListener {
     private javax.swing.JLabel lbl_pRunner4;
     private javax.swing.JPanel pnl_Controlli;
     private javax.swing.JPanel pnl_Corsia1;
-    private javax.swing.JPanel pnl_Corsia5;
-    private javax.swing.JPanel pnl_Corsia6;
-    private javax.swing.JPanel pnl_Corsia7;
+    private javax.swing.JPanel pnl_Corsia2;
+    private javax.swing.JPanel pnl_Corsia3;
+    private javax.swing.JPanel pnl_Corsia4;
     private javax.swing.JPanel pnl_Corsie;
     private javax.swing.JPanel pnl_Info;
     private javax.swing.JPanel pnl_nRunner1;
