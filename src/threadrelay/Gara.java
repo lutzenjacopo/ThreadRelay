@@ -4,13 +4,13 @@
  */
 package threadrelay;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 /**
  *
  * @author samue
  */
-public class Gara extends javax.swing.JFrame implements RunnerListener {
+public class Gara extends javax.swing.JFrame implements Observer {
 
     private javax.swing.JLabel[] iconeRunners;
     private javax.swing.JLabel[] testiPunteggi;
@@ -233,7 +233,7 @@ public class Gara extends javax.swing.JFrame implements RunnerListener {
         }
 
         for (int i = 0; i < 4; i++) {
-            Runner r = new Runner(i + 1, v, this);
+            Runner r = new Runner(i + 1, v);
             runnersAttivi[i] = r;
         }
 
@@ -348,26 +348,8 @@ public class Gara extends javax.swing.JFrame implements RunnerListener {
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void aggiornaPosizione(int idRunner, int posizione) {
-        SwingUtilities.invokeLater(() -> {
-            int indice = idRunner - 1;
-
-            // Aggiorno il testo
-            testiPunteggi[indice].setText("    " + posizione + "    ");
-
-            // Calcolo lo spazio e sposto l'icona
-            javax.swing.JLabel icona = iconeRunners[indice];
-            int larghezzaCorsia = icona.getParent().getWidth();
-            int spazioPercorribile = larghezzaCorsia - icona.getWidth();
-
-            int nuovaX = (posizione * spazioPercorribile) / 99;
-            icona.setLocation(nuovaX, icona.getY());
-        });
-    }
-
-    @Override
-    public void corsaFinita(int idRunner) {
-        SwingUtilities.invokeLater(() -> {
+    public void update(int valore) {
+       SwingUtilities.invokeLater(() -> {
             int indice = idRunner - 1;
             testiPunteggi[indice].setText("  Fine  ");
             if (idRunner == 4) {
@@ -376,8 +358,6 @@ public class Gara extends javax.swing.JFrame implements RunnerListener {
                 btn_Sospende.setEnabled(false);
                 btn_Ferma.setEnabled(false);
                 btn_Riprende.setEnabled(false);
-            }
-        });
-    }
 
+    }
 }

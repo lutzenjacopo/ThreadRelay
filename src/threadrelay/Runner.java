@@ -1,15 +1,19 @@
 package threadrelay;
 
-public class Runner implements Runnable {
+import java.awt.*;
+import java.util.*;
+
+public class Runner implements Subject, Runnable  {
     private int identificativo, velocita, posizione = 0;
     private Runner prossimoRunner;
     private volatile boolean inPausa, fermato;
-    private RunnerListener listener;
+      // ── Lista degli osservatori (sincronizzata per accesso multi-thread) ──
+    private final ArrayList<Observer> observers = new ArrayList<>();
+    
 
-    public Runner(int identificativo, int velocita, RunnerListener listener) {
+    public Runner(int identificativo, int velocita) {
         this.identificativo = identificativo;
         this.velocita = velocita;
-        this.listener = listener;
     }
 
     public void setProssimoRunner(Runner prossimoRunner) {
@@ -65,5 +69,20 @@ public class Runner implements Runnable {
         synchronized (this) {
             notifyAll();
         }
+    }
+
+    @Override
+    public void addObserver(Observer o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void removeObserver(Observer o) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void notifyObservers() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
