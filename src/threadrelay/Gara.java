@@ -1,21 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package threadrelay;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 /**
+ * Form principale della staffetta.
+ * Implementa Observer per ricevere le notifiche di posizione e fine corsa
+ * direttamente dai Runner, seguendo il pattern Observer/Subject.
  *
- * @author samue
+ * La catena staffetta funziona come nell'implementazione originale:
+ * ogni Runner sa chi è il suo successore tramite setProssimoRunner()
+ * e lo avvia da solo a posizione 90.
  */
 public class Gara extends javax.swing.JFrame implements Observer {
 
     private javax.swing.JLabel[] iconeRunners;
     private javax.swing.JLabel[] testiPunteggi;
     private Runner[] runnersAttivi = new Runner[4];
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Gara.class.getName());
+
+    private static final java.util.logging.Logger logger =
+            java.util.logging.Logger.getLogger(Gara.class.getName());
 
     /**
      * Creates new form Gara
@@ -79,50 +82,42 @@ public class Gara extends javax.swing.JFrame implements Observer {
 
         pnl_Corsia1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
         pnl_Corsia1.setLayout(null);
-
         lbl_Corridore1.setText("🏃");
         lbl_Corridore1.setToolTipText("");
         pnl_Corsia1.add(lbl_Corridore1);
         lbl_Corridore1.setBounds(10, 30, 20, 20);
         lbl_Corridore1.getAccessibleContext().setAccessibleName("");
-
         pnl_Corsie.add(pnl_Corsia1);
 
         pnl_Corsia2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
         pnl_Corsia2.setLayout(null);
-
         lbl_Corridore2.setText("🏃");
         lbl_Corridore2.setToolTipText("");
         pnl_Corsia2.add(lbl_Corridore2);
         lbl_Corridore2.setBounds(10, 30, 20, 20);
-
         pnl_Corsie.add(pnl_Corsia2);
 
         pnl_Corsia3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
         pnl_Corsia3.setLayout(null);
-
         lbl_Corridore3.setText("🏃");
         lbl_Corridore3.setToolTipText("");
         pnl_Corsia3.add(lbl_Corridore3);
         lbl_Corridore3.setBounds(10, 30, 20, 20);
-
         pnl_Corsie.add(pnl_Corsia3);
 
         pnl_Corsia4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
         pnl_Corsia4.setLayout(null);
-
         lbl_Corridore4.setText("🏃");
         lbl_Corridore4.setToolTipText("");
         pnl_Corsia4.add(lbl_Corridore4);
         lbl_Corridore4.setBounds(10, 30, 20, 20);
-
         pnl_Corsie.add(pnl_Corsia4);
 
         getContentPane().add(pnl_Corsie, java.awt.BorderLayout.CENTER);
 
         pnl_Controlli.setPreferredSize(new java.awt.Dimension(800, 80));
 
-        cbx_Velocita.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Slow", "Regular", "Fast" }));
+        cbx_Velocita.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Slow", "Regular", "Fast"}));
         cbx_Velocita.setSelectedIndex(1);
         pnl_Controlli.add(cbx_Velocita);
 
@@ -153,66 +148,45 @@ public class Gara extends javax.swing.JFrame implements Observer {
         pnl_nRunner1.setBackground(new java.awt.Color(215, 230, 245));
         pnl_nRunner1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
         pnl_nRunner1.setLayout(new java.awt.BorderLayout());
-
-        lbl_nRunner1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lbl_nRunner1.setFont(new java.awt.Font("Segoe UI", 1, 14));
         lbl_nRunner1.setText("Runner 1");
-        lbl_nRunner1.setToolTipText("");
         pnl_nRunner1.add(lbl_nRunner1, java.awt.BorderLayout.CENTER);
-        lbl_nRunner1.getAccessibleContext().setAccessibleName("RUNNER 1");
-
-        lbl_pRunner1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lbl_pRunner1.setFont(new java.awt.Font("Segoe UI", 1, 18));
         lbl_pRunner1.setText("    0    ");
-        lbl_pRunner1.setToolTipText("");
         pnl_nRunner1.add(lbl_pRunner1, java.awt.BorderLayout.LINE_END);
-
         pnl_Info.add(pnl_nRunner1);
 
         pnl_nRunner2.setBackground(new java.awt.Color(215, 230, 245));
         pnl_nRunner2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
         pnl_nRunner2.setLayout(new java.awt.BorderLayout());
-
-        lbl_nRunner2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lbl_nRunner2.setFont(new java.awt.Font("Segoe UI", 1, 14));
         lbl_nRunner2.setText("Runner 2");
-        lbl_nRunner2.setToolTipText("");
         pnl_nRunner2.add(lbl_nRunner2, java.awt.BorderLayout.CENTER);
-
-        lbl_pRunner2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lbl_pRunner2.setFont(new java.awt.Font("Segoe UI", 1, 18));
         lbl_pRunner2.setText("    0    ");
-        lbl_pRunner2.setToolTipText("");
         pnl_nRunner2.add(lbl_pRunner2, java.awt.BorderLayout.LINE_END);
-
         pnl_Info.add(pnl_nRunner2);
 
         pnl_nRunner3.setBackground(new java.awt.Color(215, 230, 245));
         pnl_nRunner3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
         pnl_nRunner3.setLayout(new java.awt.BorderLayout());
-
-        lbl_nRunner3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lbl_nRunner3.setFont(new java.awt.Font("Segoe UI", 1, 14));
         lbl_nRunner3.setText("Runner 3");
-        lbl_nRunner3.setToolTipText("");
         pnl_nRunner3.add(lbl_nRunner3, java.awt.BorderLayout.CENTER);
-
-        lbl_pRunner3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lbl_pRunner3.setFont(new java.awt.Font("Segoe UI", 1, 18));
         lbl_pRunner3.setText("    0    ");
-        lbl_pRunner3.setToolTipText("");
         pnl_nRunner3.add(lbl_pRunner3, java.awt.BorderLayout.LINE_END);
-
         pnl_Info.add(pnl_nRunner3);
 
         pnl_nRunner4.setBackground(new java.awt.Color(215, 230, 245));
         pnl_nRunner4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 51, 51)));
         pnl_nRunner4.setLayout(new java.awt.BorderLayout());
-
-        lbl_nRunner4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lbl_nRunner4.setFont(new java.awt.Font("Segoe UI", 1, 14));
         lbl_nRunner4.setText("Runner 4");
-        lbl_nRunner4.setToolTipText("");
         pnl_nRunner4.add(lbl_nRunner4, java.awt.BorderLayout.CENTER);
-
-        lbl_pRunner4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lbl_pRunner4.setFont(new java.awt.Font("Segoe UI", 1, 18));
         lbl_pRunner4.setText("    0    ");
-        lbl_pRunner4.setToolTipText("");
         pnl_nRunner4.add(lbl_pRunner4, java.awt.BorderLayout.LINE_END);
-
         pnl_Info.add(pnl_nRunner4);
 
         getContentPane().add(pnl_Info, java.awt.BorderLayout.EAST);
@@ -220,30 +194,33 @@ public class Gara extends javax.swing.JFrame implements Observer {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // ------------------------------------------------------------------ Azioni bottoni
+
     private void btn_AvviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_AvviaActionPerformed
-        int v = 0;
+        int v = switch (cbx_Velocita.getSelectedIndex()) {
+            case 0 -> 100;
+            case 2 -> 10;
+            default -> 50;
+        };
 
-        switch (cbx_Velocita.getSelectedIndex()) {
-            case 0 ->
-                v = 100;
-            case 1 ->
-                v = 50;
-            case 2 ->
-                v = 10;
-        }
-
+        // Crea i 4 runner registrando il form come Observer
         for (int i = 0; i < 4; i++) {
-            Runner r = new Runner(i + 1, v);
-            runnersAttivi[i] = r;
+            runnersAttivi[i] = new Runner(i + 1, v);
+            runnersAttivi[i].addObserver(this);
         }
 
+        // Collega la catena staffetta come nell'implementazione originale
         runnersAttivi[0].setProssimoRunner(runnersAttivi[1]);
         runnersAttivi[1].setProssimoRunner(runnersAttivi[2]);
         runnersAttivi[2].setProssimoRunner(runnersAttivi[3]);
         runnersAttivi[3].setProssimoRunner(null);
 
+        // Riporta le icone alla posizione di partenza
         for (javax.swing.JLabel icona : iconeRunners) {
             icona.setLocation(10, icona.getY());
+        }
+        for (javax.swing.JLabel testo : testiPunteggi) {
+            testo.setText("    0    ");
         }
 
         btn_Avvia.setEnabled(false);
@@ -252,22 +229,21 @@ public class Gara extends javax.swing.JFrame implements Observer {
         btn_Ferma.setEnabled(true);
         btn_Riprende.setEnabled(false);
 
-        Thread t1 = new Thread(runnersAttivi[0]);
-        t1.start();
+        // Parte solo il primo; sarà lui ad avviare il secondo a pos. 90, e così via
+        new Thread(runnersAttivi[0]).start();
     }//GEN-LAST:event_btn_AvviaActionPerformed
 
     private void btn_SospendeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SospendeActionPerformed
         for (Runner r : runnersAttivi) {
-            r.sospendi();
+            if (r != null) r.sospendi();
         }
         btn_Riprende.setEnabled(true);
         btn_Sospende.setEnabled(false);
-
     }//GEN-LAST:event_btn_SospendeActionPerformed
 
     private void btn_RiprendeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_RiprendeActionPerformed
         for (Runner r : runnersAttivi) {
-            r.riprendi();
+            if (r != null) r.riprendi();
         }
         btn_Riprende.setEnabled(false);
         btn_Sospende.setEnabled(true);
@@ -275,31 +251,57 @@ public class Gara extends javax.swing.JFrame implements Observer {
 
     private void btn_FermaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_FermaActionPerformed
         for (Runner r : runnersAttivi) {
-            if (r != null) {
-                r.ferma();
-            }
+            if (r != null) r.ferma();
         }
         btn_Avvia.setEnabled(true);
         cbx_Velocita.setEnabled(true);
-
         btn_Sospende.setEnabled(false);
         btn_Riprende.setEnabled(false);
         btn_Ferma.setEnabled(false);
-
     }//GEN-LAST:event_btn_FermaActionPerformed
 
+    // ------------------------------------------------------------------ Observer
+
     /**
-     * @param args the command line arguments
+     * Riceve la posizione aggiornata dal Runner (pattern Observer).
+     * Sostituisce aggiornaPosizione() del vecchio RunnerListener.
      */
+    @Override
+    public void update(int idRunner, int posizione) {
+        SwingUtilities.invokeLater(() -> {
+            int indice = idRunner - 1;
+
+            testiPunteggi[indice].setText("    " + posizione + "    ");
+
+            javax.swing.JLabel icona = iconeRunners[indice];
+            int larghezzaCorsia    = icona.getParent().getWidth();
+            int spazioPercorribile = larghezzaCorsia - icona.getWidth();
+            int nuovaX = (posizione * spazioPercorribile) / 99;
+            icona.setLocation(nuovaX, icona.getY());
+        });
+    }
+
     /**
-     * @param args the command line arguments
+     * Riceve la notifica di fine corsa dal Runner (pattern Observer).
+     * Sostituisce corsaFinita() del vecchio RunnerListener.
      */
+    @Override
+    public void corsaFinita(int idRunner) {
+        SwingUtilities.invokeLater(() -> {
+            testiPunteggi[idRunner - 1].setText("  Fine  ");
+            if (idRunner == 4) {
+                btn_Avvia.setEnabled(true);
+                cbx_Velocita.setEnabled(true);
+                btn_Sospende.setEnabled(false);
+                btn_Ferma.setEnabled(false);
+                btn_Riprende.setEnabled(false);
+            }
+        });
+    }
+
+    // ------------------------------------------------------------------ Main
+
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -310,9 +312,7 @@ public class Gara extends javax.swing.JFrame implements Observer {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Gara().setVisible(true));
     }
 
@@ -346,18 +346,4 @@ public class Gara extends javax.swing.JFrame implements Observer {
     private javax.swing.JPanel pnl_nRunner3;
     private javax.swing.JPanel pnl_nRunner4;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void update(int valore) {
-       SwingUtilities.invokeLater(() -> {
-            int indice = idRunner - 1;
-            testiPunteggi[indice].setText("  Fine  ");
-            if (idRunner == 4) {
-                btn_Avvia.setEnabled(true);
-                cbx_Velocita.setEnabled(true);
-                btn_Sospende.setEnabled(false);
-                btn_Ferma.setEnabled(false);
-                btn_Riprende.setEnabled(false);
-
-    }
 }

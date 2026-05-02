@@ -1,21 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package threadrelay;
 
 /**
- *
- * @author lutzen.jacopo
- */
-/**
  * Interfaccia Observer.
- * Ogni classe che vuole ricevere notifiche deve implementarla.
+ * Ogni classe che vuole ricevere notifiche dal Runner deve implementarla.
  */
 public interface Observer {
     /**
-     * Chiamato dal Subject quando il suo stato cambia.
-     * @param valore il nuovo valore dello stato
+     * Chiamato dal Subject (Runner) ogni volta che la posizione cambia.
+     * @param idRunner id del runner che notifica
+     * @param posizione il nuovo valore della posizione
      */
-    void update(int valore);
+    void update(int idRunner, int posizione);
+
+    /**
+     * Chiamato dal Subject (Runner) quando la sua corsa è terminata.
+     * @param idRunner id del runner che ha finito
+     */
+    void corsaFinita(int idRunner);
 }

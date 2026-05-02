@@ -1,88 +1,117 @@
 package threadrelay;
 
-import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Runner implements Subject, Runnable  {
-    private int identificativo, velocita, posizione = 0;
+/**
+ * Rappresenta un corridore della staffetta.
+ * Implementa Runnable per l'esecuzione su thread separato e
+ * Subject per notificare gli Observer dei cambiamenti di stato.
+ *
+ * La catena staffetta funziona come nell'implementazione originale:
+ * ogni Runner conosce il suo successore tramite setProssimoRunner()
+ * e lo avvia direttamente quando raggiunge posizione 90.
+ */
+public class Runner implements Runnable, Subject {
+
+    private final int identificativo;
+    private int velocita;
+    private int posizione = 0;
     private Runner prossimoRunner;
     private volatile boolean inPausa, fermato;
-      // ── Lista degli osservatori (sincronizzata per accesso multi-thread) ──
-    private final ArrayList<Observer> observers = new ArrayList<>();
-    
+    private final ArrayList<Observer> observers;
 
     public Runner(int identificativo, int velocita) {
         this.identificativo = identificativo;
         this.velocita = velocita;
+        this.observers = new ArrayList<>();
     }
 
     public void setProssimoRunner(Runner prossimoRunner) {
         this.prossimoRunner = prossimoRunner;
     }
 
+    // ------------------------------------------------------------------ Subject
+
+    @Override
+    public synchronized void addObserver(Observer o) {
+        if (!observers.contains(o)) {
+            observers.add(o);
+        }
+    }
+
+    @Override
+    public synchronized void removeObserver(Observer o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public synchronized void notifyObservers(int posizione) {
+        List<Observer> copia = new ArrayList<>(observers);
+        for (Observer o : copia) {
+            o.update(identificativo, posizione);
+        }
+    }
+
+    @Override
+    public synchronized void notifyFineCorsa() {
+        List<Observer> copia = new ArrayList<>(observers);
+        for (Observer o : copia) {
+            o.corsaFinita(identificativo);
+        }
+    }
+
+    // ------------------------------------------------------------------ Runnable
+
     @Override
     public void run() {
-        for (int i = 0; i <= 99; i++) { 
-            if (fermato) {
-                break;
-            }
+        for (int i = 0; i <= 99; i++) {
+
+            if (fermato) break;
+
             synchronized (this) {
                 while (inPausa) {
                     try {
                         wait();
                     } catch (InterruptedException ex) {
-                        System.getLogger(Runner.class.getName()).log(System.Logger.Level.ERROR, "Errore:", ex);
+                        if (fermato) return;
                     }
                 }
             }
-            posizione = i; 
-            
-            listener.aggiornaPosizione(identificativo, posizione);
-            
+
+            posizione = i;
+            notifyObservers(posizione);
+
+            // Passaggio del testimone: avvia il prossimo runner a posizione 90
             if (prossimoRunner != null && posizione == 90) {
-                Thread t = new Thread(prossimoRunner);
-                t.start(); 
+                new Thread(prossimoRunner).start();
             }
-            
+
             try {
                 Thread.sleep(velocita);
             } catch (InterruptedException ex) {
-                System.getLogger(Runner.class.getName()).log(System.Logger.Level.ERROR, "Errore:", ex);
+                System.getLogger(Runner.class.getName())
+                        .log(System.Logger.Level.ERROR, "Errore:", ex);
             }
         }
-        listener.corsaFinita(identificativo);
+
+        notifyFineCorsa();
     }
+
+    // ------------------------------------------------------------------ Controlli
 
     public void sospendi() {
         inPausa = true;
     }
 
-    public void riprendi() {
+    public synchronized void riprendi() {
         inPausa = false;
-        synchronized (this) {
-            notifyAll();
-        }
+        notifyAll();
     }
 
-    public void ferma() {
+    public synchronized void ferma() {
         fermato = true;
-        synchronized (this) {
-            notifyAll();
-        }
-    }
-
-    @Override
-    public void addObserver(Observer o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void removeObserver(Observer o) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void notifyObservers() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        inPausa = false;
+        notifyAll();
     }
 }
